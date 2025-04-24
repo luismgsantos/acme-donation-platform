@@ -17,7 +17,7 @@ it('allows authenticated user to create a campaign', function () {
 
     Sanctum::actingAs($user);
 
-    $response = $this->postJson('/api/v1/campaigns', [
+    $response = test()->postJson('/api/v1/campaigns', [
         'title' => 'Save the Earth',
         'description' => 'An initiative to help the environment',
         'goal_amount' => 10000,
@@ -40,7 +40,7 @@ it('allows authenticated user to update a campaign', function () {
 
     $campaign = Campaign::factory()->create(['user_id' => $user->id]);
 
-    $response = $this->putJson("/api/v1/campaigns/{$campaign->id}", [
+    $response = test()->putJson("/api/v1/campaigns/{$campaign->id}", [
         'title' => 'Save a rubber duck',
         'description' => 'An initiative to help yellow rubber ducklings from coding.'
     ]);
@@ -52,7 +52,7 @@ it('allows authenticated user to update a campaign', function () {
 });
 
 it('does not allow unauthorized user to create or update a campaign', function () {
-    $response = $this->postJson('/api/v1/campaigns', [
+    $response = test()->postJson('/api/v1/campaigns', [
         'title' => 'Save the Earth',
         'description' => 'An initiative to help the environment',
     ]);
@@ -67,7 +67,7 @@ it('allows authenticated user to donate to a campaign', function () {
 
     $campaign = Campaign::factory()->create();
 
-    $response = $this->postJson("/api/v1/campaigns/{$campaign->id}/donations", [
+    $response = test()->postJson("/api/v1/campaigns/{$campaign->id}/donations", [
         'amount' => 50,
     ]);
 
@@ -87,7 +87,7 @@ it('allows authenticated user to donate to a campaign', function () {
 it('does not allow unauthorized user to donate', function () {
     $campaign = Campaign::factory()->create();
 
-    $response = $this->postJson("/api/v1/campaigns/{$campaign->id}/donations", [
+    $response = test()->postJson("/api/v1/campaigns/{$campaign->id}/donations", [
         'amount' => 50,
     ]);
 
@@ -101,7 +101,7 @@ it('validates donation amount is greater than zero', function () {
 
     $campaign = Campaign::factory()->create();
 
-    $response = $this->postJson("/api/v1/campaigns/{$campaign->id}/donations", [
+    $response = test()->postJson("/api/v1/campaigns/{$campaign->id}/donations", [
         'amount' => 0,
     ]);
 
@@ -120,7 +120,7 @@ it('sends notification to donor and campaign creator', function () {
 
     $campaign = Campaign::factory()->create(['user_id' => $creator->id]);
 
-    $response = $this->postJson("/api/v1/campaigns/{$campaign->id}/donations", [
+    $response = test()->postJson("/api/v1/campaigns/{$campaign->id}/donations", [
         'amount' => 50,
     ]);
 

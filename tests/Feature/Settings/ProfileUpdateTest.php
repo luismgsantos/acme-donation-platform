@@ -7,7 +7,7 @@ uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 test('profile page is displayed', function () {
     $user = User::factory()->create();
 
-    $response = $this
+    $response = test()
         ->actingAs($user)
         ->get('/settings/profile');
 
@@ -17,7 +17,7 @@ test('profile page is displayed', function () {
 test('profile information can be updated', function () {
     $user = User::factory()->create();
 
-    $response = $this
+    $response = test()
         ->actingAs($user)
         ->patch('/settings/profile', [
             'name' => 'Test User',
@@ -38,7 +38,7 @@ test('profile information can be updated', function () {
 test('email verification status is unchanged when the email address is unchanged', function () {
     $user = User::factory()->create();
 
-    $response = $this
+    $response = test()
         ->actingAs($user)
         ->patch('/settings/profile', [
             'name' => 'Test User',
@@ -55,7 +55,7 @@ test('email verification status is unchanged when the email address is unchanged
 test('user can delete their account', function () {
     $user = User::factory()->create();
 
-    $response = $this
+    $response = test()
         ->actingAs($user)
         ->delete('/settings/profile', [
             'password' => 'password',
@@ -65,14 +65,14 @@ test('user can delete their account', function () {
         ->assertSessionHasNoErrors()
         ->assertRedirect('/');
 
-    $this->assertGuest();
+    test()->assertGuest();
     expect($user->fresh())->toBeNull();
 });
 
 test('correct password must be provided to delete account', function () {
     $user = User::factory()->create();
 
-    $response = $this
+    $response = test()
         ->actingAs($user)
         ->from('/settings/profile')
         ->delete('/settings/profile', [

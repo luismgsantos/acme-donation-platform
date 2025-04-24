@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 uses(RefreshDatabase::class);
 
 it('registers a user and returns a token', function () {
-    $response = $this->postJson('/api/auth/register', [
+    $response = test()->postJson('/api/auth/register', [
         'name' => 'John Doe',
         'email' => 'john@example.com',
         'password' => 'password123',
@@ -30,7 +30,7 @@ it('logs in a user and returns a token', function () {
         'password' => bcrypt($password = 'password123'),
     ]);
 
-    $response = $this->postJson('/api/auth/login', [
+    $response = test()->postJson('/api/auth/login', [
         'email' => $user->email,
         'password' => $password,
     ]);
@@ -48,7 +48,7 @@ it('logs out a user and invalidates the token', function () {
 
     Sanctum::actingAs($user);
 
-    $response = $this->postJson('/api/auth/logout');
+    $response = test()->postJson('/api/auth/logout');
 
     expect($response->status())->toBe(Response::HTTP_OK)
         ->and($response->json())->toMatchArray([
