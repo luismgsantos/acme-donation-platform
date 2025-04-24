@@ -12,7 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property-read float $goal_amount
  * @property-read \Illuminate\Support\Carbon|null $created_at
  * @property-read \App\Models\User $user
- * @property-read \Illuminate\Support\Collection $donations
+ * @property-read \Illuminate\Support\Collection<int, \App\Models\Donation> $donations
  */
 class CampaignResource extends JsonResource
 {

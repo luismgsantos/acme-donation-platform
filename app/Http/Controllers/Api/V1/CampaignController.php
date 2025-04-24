@@ -14,6 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CampaignController extends Controller
 {
+    /**
+     * Display a listing of the campaigns.
+     *
+     * @return \Illuminate\Http\Resources\Json\ResourceCollection<CampaignResource>
+     */
     public function index()
     {
         return CampaignResource::collection(
@@ -39,11 +44,19 @@ class CampaignController extends Controller
             'goal_amount' => 'required|numeric|min:1',
         ]);
 
-        $campaign = Auth::user()->campaigns()->create($validated);
+        $user = Auth::user();
 
-        return new CampaignResource($campaign->load('user'));
+        $campaign = $user?->campaigns()->create($validated);
+
+        return new CampaignResource($campaign?->load('user'));
     }
 
+    /**
+     * Display the specified campaign.
+     *
+     * @param int $id
+     * @return CampaignResource
+     */
     public function show($id)
     {
         $campaign = Campaign::with('user', 'donations')->findOrFail($id);
@@ -55,10 +68,11 @@ class CampaignController extends Controller
      * Update the specified campaign in the database.
      *
      * @param int $id
+     * @return CampaignResource|JsonResponse
      *
-     * @bodyParam title string The title of the campaign. E.g: "Save a Rubber Duck Today"
-     * @bodyParam description string The description of the campaign. E.g: "An initiative to help yellow rubber ducklings from coding."
-     * @bodyParam goal_amount float The goal amount for the campaign. E.g: 10000.00
+     * @bodyParam title string required The title of the campaign. E.g: "Save a Rubber Duck Today"
+     * @bodyParam description string required The description of the campaign. E.g: "An initiative to help yellow rubber ducklings from coding."
+     * @bodyParam goal_amount float required The goal amount for the campaign. E.g: 10000.00
      */
     public function update($id)
     {
@@ -83,6 +97,7 @@ class CampaignController extends Controller
      * Allow a user to donate to a campaign.
      *
      * @param int $id
+     * @return CampaignResource|JsonResponse
      *
      * @bodyParam amount float required The amount to donate. E.g: 50.00
      */
@@ -100,11 +115,11 @@ class CampaignController extends Controller
 
         /** @var Donation */
         $donation = $campaign->donations()->create([
-            'user_id' => $donor->id,
+            'user_id' => $donor?->id,
             'amount' => $validated['amount'],
         ]);
 
-        $donor->notify(new DonationMade($donation));
+        $donor?->notify(new DonationMade($donation));
         $campaignCreator->notify(new DonationMade($donation));
 
         return new CampaignResource($campaign->load('user', 'donations'))

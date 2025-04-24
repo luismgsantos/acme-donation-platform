@@ -11,13 +11,16 @@ use Illuminate\Support\Facades\Auth;
 
 class DonationController extends Controller
 {
+    /**
+     * Display a listing of the donations made by the authenticated user.
+     *
+     * @return \Illuminate\Http\Resources\Json\ResourceCollection<DonationResource>
+     */
     public function index()
     {
-        $donations = Auth::user()
-            ->donations()
-            ->with('campaign')
-            ->latest()
-            ->get();
+        $user = Auth::user();
+
+        $donations = $user?->donations()->with('campaign')->latest()->get();
 
         return DonationResource::collection($donations);
     }
@@ -38,11 +41,19 @@ class DonationController extends Controller
             'amount' => 'required|numeric|min:1',
         ]);
 
-        $donation = Auth::user()->donations()->create($validated);
+        $user = Auth::user();
 
-        return new DonationResource($donation->load('user'));
+        $donation = $user?->donations()->create($validated);
+
+        return new DonationResource($donation?->load('user'));
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Resources\Json\ResourceCollection<DonationResource>
+     */
     public function byCampaign($id)
     {
         $campaign = Campaign::findOrFail($id);

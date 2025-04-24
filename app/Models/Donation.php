@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Donation extends Model
 {
+    /** @use HasFactory<\Database\Factories\DonationFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -29,11 +30,17 @@ class Donation extends Model
         'amount',
     ];
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+     /**
+     * @return BelongsTo<Campaign, $this>
+     */
     public function campaign(): BelongsTo
     {
         return $this->belongsTo(Campaign::class);

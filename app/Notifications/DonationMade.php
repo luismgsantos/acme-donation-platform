@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Donation;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -22,15 +23,12 @@ class DonationMade extends Notification
      *
      * @return array<int, string>
      */
-    public function via(object $notifiable): array
+    public function via(User $notifiable): array
     {
         return ['database', 'mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail($notifiable)
+    public function toMail(User $notifiable): MailMessage
     {
         return (new MailMessage)
             ->subject($this->getMailSubject($notifiable))
@@ -39,7 +37,7 @@ class DonationMade extends Notification
             ->line('Thank you for supporting our initiatives!');
     }
 
-    private function getMailSubject($notifiable): string
+    private function getMailSubject(User $notifiable): string
     {
         $campaign = $this->donation->campaign;
         $donor = $this->donation->user;
@@ -49,7 +47,7 @@ class DonationMade extends Notification
             : 'Your Campaign Received a Donation!';
     }
 
-    private function getMailHeader($notifiable): string
+    private function getMailHeader(User $notifiable): string
     {
         $campaign = $this->donation->campaign;
         $donor = $this->donation->user;
@@ -64,7 +62,7 @@ class DonationMade extends Notification
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
+    public function toArray(User $notifiable): array
     {
         return [
             'message' => $this->getMailHeader($notifiable),

@@ -7,9 +7,16 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
+    /**
+     * Register a new user and return an access token.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function register(Request $request)
     {
         $data = $request->validate([
@@ -30,9 +37,15 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type'   => 'Bearer',
             'user'         => $user,
-        ], 201);
+        ], Response::HTTP_CREATED);
     }
 
+    /**
+     * Login a user and return an access token.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(Request $request)
     {
         $validated = $request->validate([
@@ -57,9 +70,17 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Get the authenticated user.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        $user = $request->user();
+
+        $user?->currentAccessToken()->delete();
 
         return response()->json(['message' => 'Logged out']);
     }

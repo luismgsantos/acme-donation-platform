@@ -48,11 +48,17 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * @return HasMany<Campaign, $this>
+     */
     public function campaigns(): HasMany
     {
         return $this->hasMany(Campaign::class);
     }
 
+    /**
+     * @return HasMany<Donation, $this>
+     */
     public function donations(): HasMany
     {
         return $this->hasMany(Donation::class);

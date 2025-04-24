@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Campaign extends Model
 {
+    /** @use HasFactory<\Database\Factories\CampaignFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -43,11 +44,17 @@ class Campaign extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return HasMany<Donation, $this>
+     */
     public function donations(): HasMany
     {
         return $this->hasMany(Donation::class);
