@@ -85,10 +85,11 @@
     "repositories": [
         {
             "type": "composer",
-            "url": "http://packagist.org",
+            "url": "https://repo.packagist.org",
             "options": {
                 "ssl": {
-                    "verify_peer": false
+                    "verify_peer": false,
+                    "allow_self_signed": true
                 }
             }
         }
