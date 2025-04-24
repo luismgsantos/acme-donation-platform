@@ -42,7 +42,7 @@ it('allows authenticated user to update a campaign', function () {
 
     $response = test()->putJson("/api/v1/campaigns/{$campaign->id}", [
         'title' => 'Save a rubber duck',
-        'description' => 'An initiative to help yellow rubber ducklings from coding.'
+        'description' => 'An initiative to help yellow rubber ducklings from coding.',
     ]);
 
     expect($response->status())->toBe(Response::HTTP_OK)

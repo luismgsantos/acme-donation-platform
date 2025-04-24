@@ -28,7 +28,6 @@ class DonationController extends Controller
     /**
      * Donate to a specific campaign.
      *
-     * @param \Illuminate\Http\Request $request
      * @return DonationResource
      *
      * @bodyParam campaign_id int required The ID of the campaign to donate to. E.g: 1
@@ -51,7 +50,7 @@ class DonationController extends Controller
     /**
      * Undocumented function
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Resources\Json\ResourceCollection<DonationResource>
      */
     public function byCampaign($id)

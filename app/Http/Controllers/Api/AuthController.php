@@ -14,20 +14,19 @@ class AuthController extends Controller
     /**
      * Register a new user and return an access token.
      *
-     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(Request $request)
     {
         $data = $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|unique:users',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
         $user = User::create([
-            'name'     => $data['name'],
-            'email'    => $data['email'],
+            'name' => $data['name'],
+            'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
 
@@ -35,21 +34,20 @@ class AuthController extends Controller
 
         return response()->json([
             'access_token' => $token,
-            'token_type'   => 'Bearer',
-            'user'         => $user,
+            'token_type' => 'Bearer',
+            'user' => $user,
         ], Response::HTTP_CREATED);
     }
 
     /**
      * Login a user and return an access token.
      *
-     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
     {
         $validated = $request->validate([
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
@@ -65,15 +63,14 @@ class AuthController extends Controller
 
         return response()->json([
             'access_token' => $token,
-            'token_type'   => 'Bearer',
-            'user'         => $user,
+            'token_type' => 'Bearer',
+            'user' => $user,
         ]);
     }
 
     /**
      * Get the authenticated user.
      *
-     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function logout(Request $request)

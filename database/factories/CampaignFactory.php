@@ -18,8 +18,8 @@ class CampaignFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id'    => User::factory(),
-            'title'       => fake()->sentence(6),
+            'user_id' => User::factory(),
+            'title' => fake()->sentence(6),
             'description' => fake()->paragraph,
             'goal_amount' => fake()->randomFloat(2, 1000, 100000),
         ];

@@ -16,7 +16,6 @@ class DonationResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  Request  $request
      * @return array{
      *     id: int,
      *     amount: float,
@@ -27,11 +26,11 @@ class DonationResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'         => $this->id,
-            'amount'     => $this->amount,
+            'id' => $this->id,
+            'amount' => $this->amount,
             'donated_at' => $this->created_at,
-            'donor'      => [
-                'id'   => $this->user->id,
+            'donor' => [
+                'id' => $this->user->id,
                 'name' => $this->user->name,
             ],
         ];

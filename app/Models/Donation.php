@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property float $amount
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @property-read \App\Models\User $user
  * @property-read \App\Models\Campaign $campaign
  */
@@ -38,7 +37,7 @@ class Donation extends Model
         return $this->belongsTo(User::class);
     }
 
-     /**
+    /**
      * @return BelongsTo<Campaign, $this>
      */
     public function campaign(): BelongsTo

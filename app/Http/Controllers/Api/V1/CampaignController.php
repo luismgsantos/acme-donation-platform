@@ -29,7 +29,6 @@ class CampaignController extends Controller
     /**
      * Store a newly created campaign in the database.
      *
-     * @param \Illuminate\Http\Request $request
      * @return CampaignResource
      *
      * @bodyParam title string required The title of the campaign. E.g: "Save a Rubber Duck Today"
@@ -54,7 +53,7 @@ class CampaignController extends Controller
     /**
      * Display the specified campaign.
      *
-     * @param int $id
+     * @param  int  $id
      * @return CampaignResource
      */
     public function show($id)
@@ -67,7 +66,7 @@ class CampaignController extends Controller
     /**
      * Update the specified campaign in the database.
      *
-     * @param int $id
+     * @param  int  $id
      * @return CampaignResource|JsonResponse
      *
      * @bodyParam title string required The title of the campaign. E.g: "Save a Rubber Duck Today"
@@ -96,7 +95,7 @@ class CampaignController extends Controller
     /**
      * Allow a user to donate to a campaign.
      *
-     * @param int $id
+     * @param  int  $id
      * @return CampaignResource|JsonResponse
      *
      * @bodyParam amount float required The amount to donate. E.g: 50.00
@@ -111,7 +110,6 @@ class CampaignController extends Controller
 
         $donor = Auth::user();
         $campaignCreator = $campaign->user;
-
 
         /** @var Donation */
         $donation = $campaign->donations()->create([

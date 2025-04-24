@@ -19,7 +19,6 @@ class CampaignResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  Request  $request
      * @return array{
      *     id: int,
      *     title: string,
@@ -33,16 +32,16 @@ class CampaignResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'           => $this->id,
-            'title'        => $this->title,
-            'description'  => $this->description,
-            'goal_amount'  => $this->goal_amount,
-            'created_at'   => $this->created_at,
-            'creator'      => [
-                'id'   => $this->user->id,
+            'id' => $this->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'goal_amount' => $this->goal_amount,
+            'created_at' => $this->created_at,
+            'creator' => [
+                'id' => $this->user->id,
                 'name' => $this->user->name,
             ],
-            'donations'    => DonationResource::collection($this->whenLoaded('donations')),
+            'donations' => DonationResource::collection($this->whenLoaded('donations')),
         ];
     }
 }

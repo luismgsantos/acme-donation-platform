@@ -19,9 +19,9 @@ class DonationFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id'    => User::factory(),
+            'user_id' => User::factory(),
             'campaign_id' => Campaign::factory(),
-            'amount'     => fake()->randomFloat(2, 1, 1000),
+            'amount' => fake()->randomFloat(2, 1, 1000),
         ];
     }
 }

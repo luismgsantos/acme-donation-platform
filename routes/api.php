@@ -1,9 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\V1\CampaignController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 
 require __DIR__.'/api/auth.php';
 
