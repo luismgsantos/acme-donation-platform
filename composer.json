@@ -82,6 +82,17 @@
             "php-http/discovery": true
         }
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packagist.org",
+            "options": {
+                "ssl": {
+                    "verify_peer": false
+                }
+            }
+        }
+    ],
     "minimum-stability": "stable",
     "prefer-stable": true
 }
