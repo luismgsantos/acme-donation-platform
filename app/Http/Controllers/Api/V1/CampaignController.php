@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\CampaignResource;
 use App\Models\Campaign;
+use App\Models\Donation;
 use App\Notifications\DonationMade;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -54,7 +55,6 @@ class CampaignController extends Controller
      * Update the specified campaign in the database.
      *
      * @param int $id
-     * @return CampaignResource
      *
      * @bodyParam title string The title of the campaign. E.g: "Save a Rubber Duck Today"
      * @bodyParam description string The description of the campaign. E.g: "An initiative to help yellow rubber ducklings from coding."
@@ -83,7 +83,6 @@ class CampaignController extends Controller
      * Allow a user to donate to a campaign.
      *
      * @param int $id
-     * @return CampaignResource
      *
      * @bodyParam amount float required The amount to donate. E.g: 50.00
      */
@@ -98,6 +97,8 @@ class CampaignController extends Controller
         $donor = Auth::user();
         $campaignCreator = $campaign->user;
 
+
+        /** @var Donation */
         $donation = $campaign->donations()->create([
             'user_id' => $donor->id,
             'amount' => $validated['amount'],

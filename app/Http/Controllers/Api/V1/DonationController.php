@@ -26,7 +26,6 @@ class DonationController extends Controller
      * Donate to a specific campaign.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Campaign $campaign
      * @return DonationResource
      *
      * @bodyParam campaign_id int required The ID of the campaign to donate to. E.g: 1

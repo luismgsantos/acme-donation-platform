@@ -10,6 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property-read string $title
  * @property-read string|null $description
  * @property-read float $goal_amount
+ * @property-read \Illuminate\Support\Carbon|null $created_at
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Support\Collection $donations
  */
@@ -26,7 +27,7 @@ class CampaignResource extends JsonResource
      *     goal_amount: float,
      *     created_at: \Illuminate\Support\Carbon|null,
      *     creator: array{id: int, name: string},
-     *     donations?: array<int, array>
+     *     donations?: \Illuminate\Http\Resources\Json\AnonymousResourceCollection<DonationResource>
      * }
      */
     public function toArray(Request $request): array
