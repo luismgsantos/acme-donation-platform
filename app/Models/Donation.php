@@ -21,6 +21,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Donation extends Model
 {
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'campaign_id',
+        'amount',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
