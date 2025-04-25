@@ -26,7 +26,7 @@ class CampaignResource extends JsonResource
      *     goal_amount: float,
      *     created_at: \Illuminate\Support\Carbon|null,
      *     creator: array{id: int, name: string},
-     *     donations?: \Illuminate\Http\Resources\Json\AnonymousResourceCollection<DonationResource>
+     *     donations?: \Illuminate\Http\Resources\Json\ResourceCollection<DonationResource>
      * }
      */
     public function toArray(Request $request): array
