@@ -67,9 +67,11 @@
         ],
         "test": [
             "@php artisan config:clear --ansi",
-            "@php artisan test"
+            "pint --test",
+            "@test:unit"
         ],
         "lint": "pint",
+        "test:unit": "pest --colors=always --coverage --parallel --min=85",
         "test:types": "phpstan analyse --ansi"
     },
     "extra": {
