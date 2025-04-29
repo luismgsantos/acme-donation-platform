@@ -18,8 +18,8 @@ describe('Campaigns', function () {
         Sanctum::actingAs($user);
 
         $response = test()->postJson('/api/v1/campaigns', [
-            'title' => 'Save the Earth',
-            'description' => 'An initiative to help the environment',
+            'title' => 'Save a rubber duck',
+            'description' => 'An initiative to help yellow rubber ducklings from coding.',
             'goal_amount' => 10000,
         ]);
 
@@ -53,8 +53,8 @@ describe('Campaigns', function () {
 
     it('does not allow unauthorized user to create or update a campaign', function () {
         $response = test()->postJson('/api/v1/campaigns', [
-            'title' => 'Save the Earth',
-            'description' => 'An initiative to help the environment',
+            'title' => 'Save a rubber duck',
+            'description' => 'An initiative to help yellow rubber ducklings from coding.',
         ]);
 
         expect($response->status())->toBe(Response::HTTP_UNAUTHORIZED);
