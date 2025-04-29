@@ -31,8 +31,6 @@ const fetchTopDonators = async () => {
 
     const donationsByUser: Record<number, { name: string, total: number }> = {};
 
-    console.log(allDonations);
-
     allDonations.forEach((donation: Donation) => {
         if (!donationsByUser[donation.donor.id]) {
             donationsByUser[donation.donor.id] = {
