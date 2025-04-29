@@ -11,11 +11,9 @@ require __DIR__.'/api/auth.php';
  */
 Route::prefix('v1')->group(function () {
     require __DIR__.'/api/v1/campaigns.php';
-    require __DIR__.'/api/v1/donations.php';
 });
 
 Route::prefix('v2')->group(function () {
     // Other routes for v2...
-    // require __DIR__.'/api/v1/campaigns.php';
-    // require __DIR__.'/api/v1/donations.php';
+    // require __DIR__.'/api/v2/campaigns.php';
 });

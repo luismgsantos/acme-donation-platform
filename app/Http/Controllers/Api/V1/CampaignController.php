@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Contracts\PaymentGatewayInterface;
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DonateCampaignRequest;
@@ -19,8 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CampaignController extends Controller
 {
-    public function __construct(protected PaymentGatewayInterface $paymentGateway) {}
-
     /**
      * Display a listing of the campaigns.
      *
@@ -80,7 +77,7 @@ class CampaignController extends Controller
      * Update the specified campaign in the database.
      *
      * @param  int  $id
-     * @return CampaignResource|JsonResponse
+     * @return CampaignResource|ApiException
      *
      * @bodyParam title string required The title of the campaign. E.g: "Save a Rubber Duck Today"
      * @bodyParam description string required The description of the campaign. E.g: "An initiative to help yellow rubber ducklings from coding."
@@ -88,10 +85,14 @@ class CampaignController extends Controller
      */
     public function update(UpdateCampaignRequest $request, $id)
     {
-        $campaign = Campaign::findOrFail($id);
+        $campaign = Campaign::find($id);
+
+        if (! $campaign) {
+            return ApiException::notFound('Campaign not found.');
+        }
 
         if ($campaign->user_id !== Auth::id()) {
-            return new ApiException('Unauthorized.', Response::HTTP_UNAUTHORIZED);
+            return ApiException::unauthorized();
         }
 
         $campaign->update($request->all());
@@ -100,38 +101,28 @@ class CampaignController extends Controller
     }
 
     /**
-     * Allow a user to donate to a campaign.
+     * Remove the specified campaign from the database.
      *
      * @param  int  $id
-     * @return CampaignResource|JsonResponse
-     *
-     * @bodyParam amount float required The amount to donate. E.g: 50.00
+     * @return JsonResponse
      */
-    public function donate(DonateCampaignRequest $request, $id)
+    public function destroy($id)
     {
-        $campaign = Campaign::findOrFail($id);
+        $campaign = Campaign::find($id);
 
-        $donor = Auth::user();
-
-        /** @var \App\Models\User|null */
-        $campaignCreator = $campaign->user;
-
-        if (! $this->paymentGateway->charge($request->amount)) {
-            return new ApiException('Payment failed.', Response::HTTP_PAYMENT_REQUIRED);
+        if (! $campaign) {
+            return ApiException::notFound('Campaign not found.');
         }
 
-        /** @var Donation */
-        $donation = $campaign->donations()->create([
-            'user_id' => $donor?->id,
-            'amount' => $request->amount,
-        ]);
+        if ($campaign->user_id !== Auth::id()) {
+            return ApiException::unauthorized();
+        }
 
-        $donor?->notify(new DonationMade($donation));
-        $campaignCreator->notify(new DonationMade($donation));
+        $campaign->delete();
 
-        return new CampaignResource($campaign->load('user', 'donations'))
-            ->response()
-            ->setStatusCode(Response::HTTP_CREATED);
+        return new JsonResponse([
+            'message' => 'Campaign deleted successfully.',
+        ], Response::HTTP_NO_CONTENT);
     }
 
     public function create()
