@@ -36,4 +36,25 @@ export interface User {
     updated_at: string;
 }
 
+export interface Donation {
+    id: number;
+    amount: number;
+    created_at: string | null;
+    donor: User;
+}
+
+export interface Campaign {
+    id: number;
+    title: string;
+    description: string | null;
+    goal_amount: number;
+    created_at: string | null;
+    creator: User;
+    donations: Donation[] | null;
+}
+
+export interface CampaignsResponse {
+    data: Campaign[];
+}
+
 export type BreadcrumbItemType = BreadcrumbItem;
