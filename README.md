@@ -27,17 +27,19 @@ npm run build
 ## 📁 Project Overview
 | Path                           | Description                                                      |
 | ------------------------------ | ---------------------------------------------------------------- |
-| `app/Models/`                  | Eloquent models        |
+| `app/Models/`                  | Eloquent models                                                  |
 | `app/Http/Controllers/Api/V1/` | Versioned API controllers                                        |
 | `app/Http/Controllers/Api/`    | API controllers                                                  |
 | `app/Http/Resources/V1/`       | Versioned API resources (`CampaignResource`, `DonationResource`) |
 | `app/Notifications/`           | Notifications like `DonationMade`                                |
 | `routes/api.php`               | Main API routes entry point (calls versioned route groups)       |
 | `routes/auth.php`              | Central auth routes (used across versions)                       |
+| `routes/api/auth.php`          | API Auth                                                         |
 | `routes/api/v1/campaigns.php`  | V1 Routes for Campaigns                                          |
-| `routes/api/v1/donations.php`  | V1 Routes for Donations                                          |
 | `tests/Feature/`               | Pest feature tests for API endpoints                             |
-| `README.md`                    | Project documentation                                            |
+| `tests/Unit/`                  | Pest unit tests for API endpoints                                |
+
+Full project overview [here](docs/project-overview.md)
 
 ## ✅ Features
   * Authenticated users can create donation campaigns
@@ -75,3 +77,9 @@ Or directly via Pest:
 ### Access the app
 Open `http://localhost:8000` in your browser.
 You can also use `sail shell` or `sail artisan` for interacting with the container.
+
+
+#### 📎 Author
+Luís Santos \
+GitHub: [@luismgsantos](https://github.com/luismgsantos) \
+Email: [luismgspro@gmail.com](mailto:luismgspro@gmail.com)
