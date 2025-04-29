@@ -8,8 +8,8 @@ use App\Models\Campaign;
 use App\Models\Donation;
 use App\Notifications\DonationMade;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
 class CampaignController extends Controller
@@ -21,9 +21,15 @@ class CampaignController extends Controller
      */
     public function index()
     {
-        return CampaignResource::collection(
-            Campaign::with('user')->latest()->get()
-        );
+        $campaigns = Campaign::with(['user', 'donations'])->latest()->get();
+
+        if (request()->wantsJson()) {
+            return CampaignResource::collection($campaigns);
+        }
+
+        return Inertia::render('Campaigns/Index', [
+            'campaigns' => CampaignResource::collection($campaigns),
+        ]);
     }
 
     /**
@@ -60,7 +66,13 @@ class CampaignController extends Controller
     {
         $campaign = Campaign::with('user', 'donations')->findOrFail($id);
 
-        return new CampaignResource($campaign);
+        if (request()->wantsJson()) {
+            return new CampaignResource($campaign);
+        }
+
+        return Inertia::render('Campaigns/Show', [
+            'campaign' => new CampaignResource($campaign),
+        ]);
     }
 
     /**
@@ -123,5 +135,12 @@ class CampaignController extends Controller
         return new CampaignResource($campaign->load('user', 'donations'))
             ->response()
             ->setStatusCode(Response::HTTP_CREATED);
+    }
+
+    public function create()
+    {
+        return Inertia::render('Campaigns/Create', [
+            'userToken' => auth()->user()->currentAccessToken(),
+        ]);
     }
 }
