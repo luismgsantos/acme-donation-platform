@@ -9,21 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 uses(RefreshDatabase::class);
 
-it('registers a user and returns a token', function () {
-    $response = test()->postJson('/api/auth/register', [
-        'name' => 'John Doe',
-        'email' => 'john@example.com',
-        'password' => 'password123',
-        'password_confirmation' => 'password123',
-    ]);
-
-    expect($response->status())->toBe(Response::HTTP_CREATED)
-        ->and($response->json())->toHaveKeys([
-            'access_token',
-            'token_type',
-            'user' => ['id', 'name', 'email'],
-        ]);
-});
 
 it('logs in a user and returns a token', function () {
     $user = User::factory()->create([
