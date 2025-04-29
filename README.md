@@ -1,4 +1,6 @@
 # ACME Donation Platform
+> ⚠️ **Note**: This project is a proof of concept developed for assessment purposes.  
+> It is not intended for production use.
 ## 🚀 Getting Started
 1. Clone the repository
 ```bash
