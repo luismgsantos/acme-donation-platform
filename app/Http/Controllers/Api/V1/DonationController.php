@@ -22,7 +22,7 @@ class DonationController extends Controller
 
         $donations = $user?->donations()->with('campaign')->latest()->get();
 
-        return DonationResource::collection($donations);
+        return new DonationResource::collection($donations);
     }
 
     /**
@@ -59,6 +59,6 @@ class DonationController extends Controller
 
         $donations = $campaign->donations()->with('user')->latest()->get();
 
-        return DonationResource::collection($donations);
+        return new DonationResource::collection($donations);
     }
 }
