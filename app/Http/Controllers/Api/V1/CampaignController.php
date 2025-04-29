@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Contracts\PaymentGatewayInterface;
+use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DonateCampaignRequest;
+use App\Http\Requests\StoreCampaignRequest;
+use App\Http\Requests\UpdateCampaignRequest;
 use App\Http\Resources\V1\CampaignResource;
 use App\Models\Campaign;
 use App\Models\Donation;
@@ -14,6 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CampaignController extends Controller
 {
+    public function __construct(protected PaymentGatewayInterface $paymentGateway) {}
+
     /**
      * Display a listing of the campaigns.
      *
@@ -41,17 +48,11 @@ class CampaignController extends Controller
      * @bodyParam description string required The description of the campaign. E.g: "An initiative to help yellow rubber ducklings from coding."
      * @bodyParam goal_amount float required The goal amount for the campaign. E.g: 10000.00
      */
-    public function store(Request $request)
+    public function store(StoreCampaignRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'goal_amount' => 'required|numeric|min:1',
-        ]);
-
         $user = Auth::user();
 
-        $campaign = $user?->campaigns()->create($validated);
+        $campaign = $user?->campaigns()->create($request->all());
 
         return new CampaignResource($campaign?->load('user'));
     }
@@ -85,21 +86,15 @@ class CampaignController extends Controller
      * @bodyParam description string required The description of the campaign. E.g: "An initiative to help yellow rubber ducklings from coding."
      * @bodyParam goal_amount float required The goal amount for the campaign. E.g: 10000.00
      */
-    public function update($id)
+    public function update(UpdateCampaignRequest $request, $id)
     {
         $campaign = Campaign::findOrFail($id);
 
         if ($campaign->user_id !== Auth::id()) {
-            return response()->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+            return new ApiException('Unauthorized.', Response::HTTP_UNAUTHORIZED);
         }
 
-        $validated = request()->validate([
-            'title' => 'string|max:255',
-            'description' => 'string',
-            'goal_amount' => 'numeric|min:1',
-        ]);
-
-        $campaign->update($validated);
+        $campaign->update($request->all());
 
         return new CampaignResource($campaign);
     }
@@ -112,21 +107,23 @@ class CampaignController extends Controller
      *
      * @bodyParam amount float required The amount to donate. E.g: 50.00
      */
-    public function donate($id)
+    public function donate(DonateCampaignRequest $request, $id)
     {
         $campaign = Campaign::findOrFail($id);
 
-        $validated = request()->validate([
-            'amount' => 'required|numeric|min:1',
-        ]);
-
         $donor = Auth::user();
+
+        /** @var \App\Models\User|null */
         $campaignCreator = $campaign->user;
+
+        if (! $this->paymentGateway->charge($request->amount)) {
+            return new ApiException('Payment failed.', Response::HTTP_PAYMENT_REQUIRED);
+        }
 
         /** @var Donation */
         $donation = $campaign->donations()->create([
             'user_id' => $donor?->id,
-            'amount' => $validated['amount'],
+            'amount' => $request->amount,
         ]);
 
         $donor?->notify(new DonationMade($donation));
