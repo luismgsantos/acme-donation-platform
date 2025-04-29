@@ -44,6 +44,11 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard',
         icon: LayoutGrid,
     },
+    {
+        title: 'Campaigns',
+        href: '/campaigns',
+        icon: LayoutGrid,
+    },
 ];
 
 const rightNavItems: NavItem[] = [
