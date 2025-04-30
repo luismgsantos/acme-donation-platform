@@ -82,7 +82,6 @@ describe('Donations', function () {
             'amount' => 50,
         ]);
 
-
         expect($response->status())->toBe(Response::HTTP_CREATED)
             ->and($response->json())->toHaveKey('data')
             ->toHaveKeys([
@@ -94,5 +93,17 @@ describe('Donations', function () {
             ])
             ->and(Arr::get($response->json(), 'data.donations'))->toHaveCount(1)
             ->and(Arr::get($response->json(), 'data.donations.0.amount'))->toBe(50);
+    });
+
+    it('returns 404 if campaign does not exist', function () {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $response = test()->postJson('/api/v1/campaigns/99999/donations', [
+            'amount' => 50,
+        ]);
+
+        expect($response->status())->toBe(Response::HTTP_NOT_FOUND)
+            ->and($response->json('error'))->toBe('Campaign not found.');
     });
 });
