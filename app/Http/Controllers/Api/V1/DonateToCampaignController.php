@@ -14,6 +14,7 @@ use App\Notifications\DonationMade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\JsonResponse;
 
 class DonateToCampaignController extends Controller
 {
@@ -21,7 +22,14 @@ class DonateToCampaignController extends Controller
         protected PaymentGatewayInterface $paymentGateway
     ) {}
 
-    public function __invoke(DonateCampaignRequest $request, $id)
+    /**
+     * Handle the incoming request.
+     *
+     * @param  \App\Http\Requests\DonateCampaignRequest  $request
+     * @param  int  $id
+     * @return CampaignResource|ApiException|JsonResponse
+     */
+    public function __invoke(DonateCampaignRequest $request, int $id): CampaignResource|ApiException|JsonResponse
     {
         $campaign = Campaign::find($id);
 
@@ -31,7 +39,6 @@ class DonateToCampaignController extends Controller
 
         $donor = Auth::user();
 
-        /** @var \App\Models\User|null */
         $campaignCreator = $campaign->user;
 
         if (! $this->paymentGateway->charge($request->amount)) {

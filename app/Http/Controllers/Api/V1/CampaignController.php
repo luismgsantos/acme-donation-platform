@@ -21,7 +21,7 @@ class CampaignController extends Controller
     /**
      * Display a listing of the campaigns.
      *
-     * @return \Illuminate\Http\Resources\Json\ResourceCollection<CampaignResource>
+     * @return \Illuminate\Http\Resources\Json\ResourceCollection<CampaignResource>|\Inertia\Response
      */
     public function index()
     {
@@ -45,7 +45,7 @@ class CampaignController extends Controller
      * @bodyParam description string required The description of the campaign. E.g: "An initiative to help yellow rubber ducklings from coding."
      * @bodyParam goal_amount float required The goal amount for the campaign. E.g: 10000.00
      */
-    public function store(StoreCampaignRequest $request)
+    public function store(StoreCampaignRequest $request): CampaignResource
     {
         $user = Auth::user();
 
@@ -58,9 +58,9 @@ class CampaignController extends Controller
      * Display the specified campaign.
      *
      * @param  int  $id
-     * @return CampaignResource
+     * @return CampaignResource|\Inertia\Response
      */
-    public function show($id)
+    public function show(int $id): CampaignResource|\Inertia\Response
     {
         $campaign = Campaign::with('user', 'donations')->findOrFail($id);
 
@@ -77,13 +77,13 @@ class CampaignController extends Controller
      * Update the specified campaign in the database.
      *
      * @param  int  $id
-     * @return CampaignResource|ApiException
+     * @return CampaignResource|ApiException|JsonResponse
      *
      * @bodyParam title string required The title of the campaign. E.g: "Save a Rubber Duck Today"
      * @bodyParam description string required The description of the campaign. E.g: "An initiative to help yellow rubber ducklings from coding."
      * @bodyParam goal_amount float required The goal amount for the campaign. E.g: 10000.00
      */
-    public function update(UpdateCampaignRequest $request, $id)
+    public function update(UpdateCampaignRequest $request, int $id): CampaignResource|ApiException|JsonResponse
     {
         $campaign = Campaign::find($id);
 
@@ -106,7 +106,7 @@ class CampaignController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
         $campaign = Campaign::find($id);
 
@@ -125,10 +125,12 @@ class CampaignController extends Controller
         ], Response::HTTP_NO_CONTENT);
     }
 
-    public function create()
+    public function create(): \Inertia\Response
     {
+        $user = Auth::user();
+
         return Inertia::render('Campaigns/Create', [
-            'userToken' => auth()->user()->currentAccessToken(),
+            'userToken' => $user?->currentAccessToken(),
         ]);
     }
 }
