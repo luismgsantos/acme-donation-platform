@@ -4,13 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DonateCampaignRequest;
 use App\Http\Requests\StoreCampaignRequest;
 use App\Http\Requests\UpdateCampaignRequest;
 use App\Http\Resources\V1\CampaignResource;
 use App\Models\Campaign;
-use App\Models\Donation;
-use App\Notifications\DonationMade;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -39,7 +36,6 @@ class CampaignController extends Controller
     /**
      * Store a newly created campaign in the database.
      *
-     * @return CampaignResource
      *
      * @bodyParam title string required The title of the campaign. E.g: "Save a Rubber Duck Today"
      * @bodyParam description string required The description of the campaign. E.g: "An initiative to help yellow rubber ducklings from coding."
@@ -56,9 +52,6 @@ class CampaignController extends Controller
 
     /**
      * Display the specified campaign.
-     *
-     * @param  int  $id
-     * @return CampaignResource|\Inertia\Response
      */
     public function show(int $id): CampaignResource|\Inertia\Response
     {
@@ -76,8 +69,6 @@ class CampaignController extends Controller
     /**
      * Update the specified campaign in the database.
      *
-     * @param  int  $id
-     * @return CampaignResource|ApiException|JsonResponse
      *
      * @bodyParam title string required The title of the campaign. E.g: "Save a Rubber Duck Today"
      * @bodyParam description string required The description of the campaign. E.g: "An initiative to help yellow rubber ducklings from coding."
@@ -102,9 +93,6 @@ class CampaignController extends Controller
 
     /**
      * Remove the specified campaign from the database.
-     *
-     * @param  int  $id
-     * @return JsonResponse
      */
     public function destroy(int $id): JsonResponse
     {

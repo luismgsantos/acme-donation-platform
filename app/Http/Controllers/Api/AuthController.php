@@ -6,19 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-
     /**
      * Authenticate a user and return an access token.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function authenticate(string $email, string $password) {
+    public static function authenticate(string $email, string $password)
+    {
         $user = User::where('email', $email)->first();
 
         if (! $user || ! Auth::attempt(['email' => $email, 'password' => $password])) {

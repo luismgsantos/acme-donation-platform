@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 uses(RefreshDatabase::class);
 
-
 it('logs in a user and returns a token', function () {
     $user = User::factory()->create([
         'password' => bcrypt($password = 'password123'),

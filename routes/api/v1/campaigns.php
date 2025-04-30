@@ -1,6 +1,5 @@
 <?php
 
-use App\Exceptions\ApiException;
 use App\Http\Controllers\Api\V1\CampaignController;
 use App\Http\Controllers\Api\V1\DonateToCampaignController;
 use Illuminate\Support\Facades\Route;

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Campaign;
 use App\Models\Donation;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;

@@ -7,14 +7,13 @@ use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DonateCampaignRequest;
 use App\Http\Resources\V1\CampaignResource;
-use App\Http\Resources\V1\DonationResource;
 use App\Models\Campaign;
 use App\Models\Donation;
 use App\Notifications\DonationMade;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Http\JsonResponse;
 
 class DonateToCampaignController extends Controller
 {
@@ -24,10 +23,6 @@ class DonateToCampaignController extends Controller
 
     /**
      * Handle the incoming request.
-     *
-     * @param  \App\Http\Requests\DonateCampaignRequest  $request
-     * @param  int  $id
-     * @return CampaignResource|ApiException|JsonResponse
      */
     public function __invoke(DonateCampaignRequest $request, int $id): CampaignResource|ApiException|JsonResponse
     {

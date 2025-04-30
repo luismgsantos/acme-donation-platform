@@ -25,7 +25,7 @@ class ApiException extends Exception
         return (new self($message, Response::HTTP_NOT_FOUND))->render();
     }
 
-    public static function unauthorized(string $message = "Unauthorized."): JsonResponse
+    public static function unauthorized(string $message = 'Unauthorized.'): JsonResponse
     {
         return (new self($message, Response::HTTP_UNAUTHORIZED))->render();
     }
