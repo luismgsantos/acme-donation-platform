@@ -73,6 +73,7 @@ docker
 | `DELETE` | `/api/v1/campaigns/{id}`           | Delete campaign    |
 | `POST`   | `/api/v1/campaigns/{id}/donations` | Donate to campaign |
 
+A Postman collection can be found [here](postman_collection/acme_donation_platform_postman_collection.json).
 ---
 
 ## 📊 UI Features

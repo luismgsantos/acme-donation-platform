@@ -1,0 +1,361 @@
+{
+	"info": {
+		"_postman_id": "bbd58cb4-b251-458a-b254-1c01f57e3044",
+		"name": "ACME Donation Platform",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25002682"
+	},
+	"item": [
+		{
+			"name": "API",
+			"item": [
+				{
+					"name": "v1",
+					"item": [
+						{
+							"name": "Campaigns",
+							"item": [
+								{
+									"name": "Index",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "",
+												"value": "",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{hostApi}}/v1/campaigns",
+											"host": [
+												"{{hostApi}}"
+											],
+											"path": [
+												"v1",
+												"campaigns"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Show",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{hostApi}}/v1/campaigns/10584",
+											"host": [
+												"{{hostApi}}"
+											],
+											"path": [
+												"v1",
+												"campaigns",
+												"10584"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Store",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"title\": \"Test Campaign from Postman\",\n    \"description\": \"It is quality rather than quantity that matters.\",\n    \"goal_amount\": 1000\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{hostApi}}/v1/campaigns",
+											"host": [
+												"{{hostApi}}"
+											],
+											"path": [
+												"v1",
+												"campaigns"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"title\": \"Quote from Lucius Annaeus Seneca\",\n    \"description\": \"It is quality rather than quantity that matters.\",\n    \"goal_amount\": 1000\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{hostApi}}/v1/campaigns/10584",
+											"host": [
+												"{{hostApi}}"
+											],
+											"path": [
+												"v1",
+												"campaigns",
+												"10584"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{hostApi}}/v1/campaigns/10584",
+											"host": [
+												"{{hostApi}}"
+											],
+											"path": [
+												"v1",
+												"campaigns",
+												"10584"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const response = pm.response.json();",
+											"",
+											"const bearerTokenString = response.token_type + ' ' + response.access_token;",
+											"",
+											"if (pm.response.status == 'OK')  pm.environment.set('token', response.access_token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"luismgspro@gmail.com\",\n    \"password\": \"password\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostApi}}/auth/login",
+									"host": [
+										"{{hostApi}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"luismgspro@gmail.com\",\n    \"password\": \"password\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostApi}}/auth/logout",
+									"host": [
+										"{{hostApi}}"
+									],
+									"path": [
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "hostApi",
+			"value": "localhost:8000/api",
+			"type": "default"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "host",
+			"value": "localhost:8000",
+			"type": "default"
+		}
+	]
+}
